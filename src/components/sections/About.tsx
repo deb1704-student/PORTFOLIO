@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { MoveRight } from "lucide-react";
 
 export default function About() {
@@ -10,8 +9,6 @@ export default function About() {
     const textRef = useRef<HTMLHeadingElement>(null);
 
     useEffect(() => {
-        gsap.registerPlugin(ScrollTrigger);
-
         if (!textRef.current) return;
 
         const words = textRef.current.innerText.split(" ");
@@ -29,7 +26,7 @@ export default function About() {
 
         const spans = textRef.current.querySelectorAll("span");
 
-        gsap.to(spans, {
+        const tween = gsap.to(spans, {
             scrollTrigger: {
                 trigger: container.current,
                 start: "top 60%",
@@ -42,13 +39,17 @@ export default function About() {
         });
 
         return () => {
-            ScrollTrigger.getAll().forEach((t) => t.kill());
+            // Only kill the ScrollTrigger instance created by this component
+            tween.scrollTrigger?.kill();
+            tween.kill();
         };
     }, []);
 
     return (
         <section
             ref={container}
+            id="about"
+            aria-label="About me"
             className="relative w-full min-h-screen flex flex-col justify-center px-4 md:px-12 lg:px-24 py-32 bg-background z-10"
         >
             <div className="max-w-7xl mx-auto w-full flex flex-col md:flex-row gap-16 md:gap-24">

@@ -1,0 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# TODO: Replace with your actual domain
+Sitemap: https://debanjandas.com/sitemap.xml

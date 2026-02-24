@@ -1,0 +1,36 @@
+---
+title: "Building Scalable Payment Systems"
+date: "2026-02-20"
+excerpt: "Lessons learned from architecting a high-throughput payment gateway that handles millions of transactions with sub-100ms latency."
+tags: ["fintech", "system-design", "go"]
+---
+
+# Building Scalable Payment Systems
+
+Payment infrastructure is one of the most demanding domains in software engineering. Every millisecond of latency costs money, and every bug can mean lost revenue or regulatory violations.
+
+## The Core Challenge
+
+When building payment systems at scale, you're essentially solving three problems simultaneously:
+
+- **Consistency**: Every transaction must be atomic — partial payments are unacceptable
+- **Throughput**: The system must handle burst traffic during peak hours without degradation
+- **Auditability**: Every state change must be traceable for compliance and debugging
+
+## Architecture Decisions
+
+We chose an event-driven architecture with Kafka as the message backbone. This gave us natural decoupling between services and built-in replay capabilities for debugging production issues.
+
+> The best architecture is the one that makes the right thing easy and the wrong thing hard.
+
+For distributed locking, Redis provided the sub-millisecond performance we needed, while PostgreSQL handled the ACID guarantees for our ledger.
+
+## Key Takeaways
+
+1. **Design for failure first** — assume every network call will fail and build retry logic from day one
+2. **Idempotency is non-negotiable** — duplicate processing in payments is catastrophic
+3. **Observability over debugging** — invest in structured logging and distributed tracing early
+
+---
+
+*This is a sample blog post. Replace it with your own content.*
